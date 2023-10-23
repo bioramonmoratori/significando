@@ -43,135 +43,142 @@ public class AquarelaController {
     @GetMapping("/sentimentos")
     public String conectandoSentimentos(Model model){
         
-        // Ver a lista de sentimentos principais ja preenchidas
-        // Enviar o mapa para a pagina para ir ao metodo post
+        try{
+            // Ver a lista de sentimentos principais ja preenchidas
+            // Enviar o mapa para a pagina para ir ao metodo post
 
-        /* Preciso enviar:
-         * Sentimento Principal nao repetido
-         * Lista de Sentimentos sem o sentimento Principal
-         */
+            /* Preciso enviar:
+            * Sentimento Principal nao repetido
+            * Lista de Sentimentos sem o sentimento Principal
+            */
 
-        Boolean primeiroSentimentoEncontrado = false;
-        
-        Sentimento sentimentoPrincipal = null;
-        List<Sentimento> listaDeSentimentos = new ArrayList<>();
-        RelacionandoSentimentoForm relacionandoSentimentoForm = new RelacionandoSentimentoForm();
-
-        // Confere se a lista de sentimentos gerais esta preenchida 
-        if(grafos.getMapaDeSentimentos().isEmpty()){
-            grafos.registrandoSentimentosPrincipais();
-        }
-
-        // Percorre a lista de sentimentos
-        for(Sentimento sentimento : grafos.listaDeSentimentosPrincipais()){
-
-            // Pega o primeiro sentimento principal ainda nao preenchido
-            if(grafos.obtendoListaDeSentimentosRelacionados(sentimento).isEmpty() && primeiroSentimentoEncontrado == false){
+            Boolean primeiroSentimentoEncontrado = false;
             
-                sentimentoPrincipal = sentimento;
-                primeiroSentimentoEncontrado = true;
+            Sentimento sentimentoPrincipal = null;
+            List<Sentimento> listaDeSentimentos = new ArrayList<>();
+            RelacionandoSentimentoForm relacionandoSentimentoForm = new RelacionandoSentimentoForm();
+
+            // Confere se a lista de sentimentos gerais esta preenchida 
+            if(grafos.getMapaDeSentimentos().isEmpty()){
+                grafos.registrandoSentimentosPrincipais();
             }
-            
-        }
 
-        for(Sentimento sentimento : grafos.listaDeSentimentosPrincipais()){
+            // Percorre a lista de sentimentos
+            for(Sentimento sentimento : grafos.listaDeSentimentosPrincipais()){
 
-            // Preenche a lista dos outros sentimentos sem repetir o sentimento principal
-            if(sentimento != sentimentoPrincipal && (grafos.obtendoListaDeSentimentosRelacionados(sentimento).contains(sentimentoPrincipal) == false)){
+                // Pega o primeiro sentimento principal ainda nao preenchido
+                if(grafos.obtendoListaDeSentimentosRelacionados(sentimento).isEmpty() && primeiroSentimentoEncontrado == false){
                 
-                System.out.println(sentimento);
-                listaDeSentimentos.add(sentimento);
+                    sentimentoPrincipal = sentimento;
+                    primeiroSentimentoEncontrado = true;
+                }
                 
             }
 
+            for(Sentimento sentimento : grafos.listaDeSentimentosPrincipais()){
+
+                // Preenche a lista dos outros sentimentos sem repetir o sentimento principal
+                if(sentimento != sentimentoPrincipal && (grafos.obtendoListaDeSentimentosRelacionados(sentimento).contains(sentimentoPrincipal) == false)){
+                    
+                    System.out.println(sentimento);
+                    listaDeSentimentos.add(sentimento);
+                    
+                }
+
+            }
+
+            relacionandoSentimentoForm.setListaDeSentimentos(listaDeSentimentos);
+            relacionandoSentimentoForm.setSentimentoPrincipal(sentimentoPrincipal);
+
+            model.addAttribute("relacionandosentimentoform", relacionandoSentimentoForm);
+            return "form";
+
+        }catch(Exception e){
+            return "redirect:/sentimentos";
         }
-
-        relacionandoSentimentoForm.setListaDeSentimentos(listaDeSentimentos);
-        relacionandoSentimentoForm.setSentimentoPrincipal(sentimentoPrincipal);
-
-        model.addAttribute("relacionandosentimentoform", relacionandoSentimentoForm);
-        return "form";
     
     }
 
     @PostMapping("/calculandografo")
     public String calculandoGrafo(@RequestParam("sentimentos") List<Sentimento> sentimentosSelecionados, @RequestParam("sentimentoprincipal") Sentimento sentimentoPrincipal){
-        
-        System.out.println(sentimentosSelecionados);
-        System.out.println(sentimentoPrincipal);
-
-        for(Sentimento sentimento : sentimentosSelecionados){
+        try{
+            for(Sentimento sentimento : sentimentosSelecionados){
+                
+                grafos.criandoRelacoesEntreOsSentimentos(
+                    sentimentoPrincipal, sentimento);
+                
+            }
             
-            grafos.criandoRelacoesEntreOsSentimentos(
-                sentimentoPrincipal, sentimento);
-        
+        } catch(Exception e){
         }
-
-        System.out.println(grafos.getMapaDeSentimentos());
         return "redirect:/sentimentos";
     }
 
     @GetMapping("/gerarmapa")
     public String gerarMapa(Model model) throws IOException {
-    
-        Graph graph = new SingleGraph("MeuGrafo");
-    
-        // Substitua esta parte pelo seu HashMap
-        HashMap<Sentimento, List<Sentimento>> mapaDeSentimentos = grafos.getMapaDeSentimentos();
-    
-        // Adicione nós ao grafo
-        for (Sentimento sentimento : mapaDeSentimentos.keySet()) {
-            graph.addNode(sentimento.toString()).setAttribute("ui.label", sentimento.toString());
-            
-        }
-    
-        // Adicione arestas ao grafo
-        for (Map.Entry<Sentimento, List<Sentimento>> entry : mapaDeSentimentos.entrySet()) {
-            Sentimento sentimento = entry.getKey();
-            List<Sentimento> relacionados = entry.getValue();
-            for (Sentimento relacionado : relacionados) {
-                graph.addEdge(sentimento.toString() + "_" + relacionado.toString(), sentimento.toString(), relacionado.toString());
+        
+        try{
+            Graph graph = new SingleGraph("MeuGrafo");
+        
+            // Substitua esta parte pelo seu HashMap
+            HashMap<Sentimento, List<Sentimento>> mapaDeSentimentos = grafos.getMapaDeSentimentos();
+        
+            // Adicione nós ao grafo
+            for (Sentimento sentimento : mapaDeSentimentos.keySet()) {
+                graph.addNode(sentimento.toString()).setAttribute("ui.label", sentimento.toString());
                 
             }
-        }
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        ArrayNode elementsArray = JsonNodeFactory.instance.arrayNode();
         
-        for (Node node : graph) {
-            ObjectNode nodeData = objectMapper.createObjectNode();
-            nodeData.putObject("data")
-                .put("id", node.getId())
-                .put("label", node.getId());  // Você pode ajustar o label conforme necessário
-            elementsArray.add(nodeData);
+            // Adicione arestas ao grafo
+            for (Map.Entry<Sentimento, List<Sentimento>> entry : mapaDeSentimentos.entrySet()) {
+                Sentimento sentimento = entry.getKey();
+                List<Sentimento> relacionados = entry.getValue();
+                for (Sentimento relacionado : relacionados) {
+                    graph.addEdge(sentimento.toString() + "_" + relacionado.toString(), sentimento.toString(), relacionado.toString());
+                }
+            }
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            ArrayNode elementsArray = JsonNodeFactory.instance.arrayNode();
+            
+            for (Node node : graph) {
+                ObjectNode nodeData = objectMapper.createObjectNode();
+                nodeData.putObject("data")
+                    .put("id", node.getId())
+                    .put("label", node.getId());  // Você pode ajustar o label conforme necessário
+                elementsArray.add(nodeData);
+            }
+            
+            for (Edge edge : graph.getEachEdge()) {
+                ObjectNode edgeData = objectMapper.createObjectNode();
+                edgeData.putObject("data")
+                    .put("id", edge.getId())
+                    .put("source", edge.getNode0().getId())
+                    .put("target", edge.getNode1().getId());
+                elementsArray.add(edgeData);
+            }
+
+
+            String graphJsonData = objectMapper.writeValueAsString(elementsArray);
+
+            System.out.println(graphJsonData);
+
+            model.addAttribute("graph", graphJsonData);
+            return "grafo";
+        }catch(Exception e){
+            return "redirect:/sentimentos";
         }
-        
-        for (Edge edge : graph.getEachEdge()) {
-            ObjectNode edgeData = objectMapper.createObjectNode();
-            edgeData.putObject("data")
-                .put("id", edge.getId())
-                .put("source", edge.getNode0().getId())
-                .put("target", edge.getNode1().getId());
-            elementsArray.add(edgeData);
-        }
-
-
-        String graphJsonData = objectMapper.writeValueAsString(elementsArray);
-
-        System.out.println(graphJsonData);
-
-        model.addAttribute("graph", graphJsonData);
-        return "grafo";
-
 
     }
 
     @GetMapping("/limparmapa")
     public String limparMapa(){
-
-        grafos.getMapaDeSentimentos().clear();
+        try{
+            grafos.getMapaDeSentimentos().clear();
+            
+        }catch(Exception e){
+        }
         return "redirect:/sentimentos";
-
     }
 
 }
