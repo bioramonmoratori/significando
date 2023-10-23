@@ -34,13 +34,13 @@ public class AquarelaController {
     @Autowired
     Grafos grafos;
     
-    @GetMapping("/inicio")
+    @GetMapping("/")
     public String inicio(){
         return "index";
     }
 
 
-    @GetMapping("/")
+    @GetMapping("/sentimentos")
     public String conectandoSentimentos(Model model){
         
         // Ver a lista de sentimentos principais ja preenchidas
@@ -71,11 +71,19 @@ public class AquarelaController {
                 sentimentoPrincipal = sentimento;
                 primeiroSentimentoEncontrado = true;
             }
+            
+        }
+
+        for(Sentimento sentimento : grafos.listaDeSentimentosPrincipais()){
 
             // Preenche a lista dos outros sentimentos sem repetir o sentimento principal
-            if(sentimento != sentimentoPrincipal){
+            if(sentimento != sentimentoPrincipal && (grafos.obtendoListaDeSentimentosRelacionados(sentimento).contains(sentimentoPrincipal) == false)){
+                
+                System.out.println(sentimento);
                 listaDeSentimentos.add(sentimento);
+                
             }
+
         }
 
         relacionandoSentimentoForm.setListaDeSentimentos(listaDeSentimentos);
@@ -100,7 +108,7 @@ public class AquarelaController {
         }
 
         System.out.println(grafos.getMapaDeSentimentos());
-        return "redirect:/";
+        return "redirect:/sentimentos";
     }
 
     @GetMapping("/gerarmapa")
@@ -150,10 +158,19 @@ public class AquarelaController {
 
         String graphJsonData = objectMapper.writeValueAsString(elementsArray);
 
+        System.out.println(graphJsonData);
 
         model.addAttribute("graph", graphJsonData);
         return "grafo";
 
+
+    }
+
+    @GetMapping("/limparmapa")
+    public String limparMapa(){
+
+        grafos.getMapaDeSentimentos().clear();
+        return "redirect:/sentimentos";
 
     }
 
