@@ -124,7 +124,6 @@ public enum Sentimento {
     PAVOR,
     DETESTAVEL,
     HORROR,
-    DESGOTO,
     ENJOO,
     DESAPROVACAO,
     VACILO,

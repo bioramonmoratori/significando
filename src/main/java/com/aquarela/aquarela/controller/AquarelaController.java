@@ -106,9 +106,8 @@ public class AquarelaController {
                 
                 grafos.criandoRelacoesEntreOsSentimentos(
                     sentimentoPrincipal, sentimento);
-                
             }
-            
+        
         } catch(Exception e){
         }
         return "redirect:/sentimentos";
