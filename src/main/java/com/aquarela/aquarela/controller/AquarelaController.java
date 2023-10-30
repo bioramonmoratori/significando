@@ -42,7 +42,7 @@ public class AquarelaController {
 
     @GetMapping("/sentimentos")
     public String conectandoSentimentos(Model model){
-        
+
         try{
             // Ver a lista de sentimentos principais ja preenchidas
             // Enviar o mapa para a pagina para ir ao metodo post
