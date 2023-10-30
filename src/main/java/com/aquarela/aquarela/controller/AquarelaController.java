@@ -80,7 +80,6 @@ public class AquarelaController {
                 // Preenche a lista dos outros sentimentos sem repetir o sentimento principal
                 if(sentimento != sentimentoPrincipal && (grafos.obtendoListaDeSentimentosRelacionados(sentimento).contains(sentimentoPrincipal) == false)){
                     
-                    System.out.println(sentimento);
                     listaDeSentimentos.add(sentimento);
                     
                 }
@@ -89,6 +88,7 @@ public class AquarelaController {
 
             relacionandoSentimentoForm.setListaDeSentimentos(listaDeSentimentos);
             relacionandoSentimentoForm.setSentimentoPrincipal(sentimentoPrincipal);
+            relacionandoSentimentoForm.setCategoria(sentimentoPrincipal.getCategoria());
 
             model.addAttribute("relacionandosentimentoform", relacionandoSentimentoForm);
             return "form";
@@ -125,7 +125,6 @@ public class AquarelaController {
             // Adicione nós ao grafo
             for (Sentimento sentimento : mapaDeSentimentos.keySet()) {
                 graph.addNode(sentimento.toString()).setAttribute("ui.label", sentimento.toString());
-                
             }
         
             // Adicione arestas ao grafo
@@ -144,7 +143,8 @@ public class AquarelaController {
                 ObjectNode nodeData = objectMapper.createObjectNode();
                 nodeData.putObject("data")
                     .put("id", node.getId())
-                    .put("label", node.getId());  // Você pode ajustar o label conforme necessário
+                    .put("label", node.getId())
+                    .put("categoria", Sentimento.valueOf(node.getId()).getCategoria().toString());  // Você pode ajustar o label conforme necessário
                 elementsArray.add(nodeData);
             }
             
@@ -160,7 +160,7 @@ public class AquarelaController {
 
             String graphJsonData = objectMapper.writeValueAsString(elementsArray);
 
-            System.out.println(graphJsonData);
+            //System.out.println(graphJsonData);
 
             model.addAttribute("graph", graphJsonData);
             return "grafo";

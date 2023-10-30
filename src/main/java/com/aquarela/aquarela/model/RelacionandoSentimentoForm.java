@@ -7,6 +7,7 @@ public class RelacionandoSentimentoForm {
     
     private Sentimento sentimentoPrincipal;
     private List<Sentimento> listaDeSentimentos = new ArrayList<>();
+    private Categoria categoria;
 
     public Sentimento getSentimentoPrincipal() {
         return sentimentoPrincipal;
@@ -19,6 +20,12 @@ public class RelacionandoSentimentoForm {
     }
     public void setListaDeSentimentos(List<Sentimento> listaDeSentimentos) {
         this.listaDeSentimentos = listaDeSentimentos;
+    }
+    public Categoria getCategoria() {
+        return categoria;
+    }
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 
 }
