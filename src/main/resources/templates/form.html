@@ -26,7 +26,7 @@
         crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-        
+
 </head>
 
 <body>
@@ -34,20 +34,20 @@
     <!-- Navigation-->
     <nav class="navbar navbar-expand-md bg-body-secondary py-3 border-bottom text-uppercase fixed-top" id="mainNav">
         <div class="container">
-            <a class="navbar-brand fw-bold text-uppercase" href="/">Significando</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent"
-                aria-expanded="false" aria-label="Toggle navigation">
+            <a class="navbar-brand fw-bold text-uppercase" href="/"><span class="primary-color">Significando</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu"
+                aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse w-100 " id="navbarScroll">
-                <ul class="navbar-nav me-auto navbar-nav-scroll  d-flex align-items-center justify-content-end w-100">
-                    <li class="nav-item mx-2">
+            <div class="collapse navbar-collapse w-100 mt-3 mt-md-0" id="menu">
+                <ul
+                    class="navbar-nav me-auto navbar-nav-scroll d-flex align-items-end-md-center align-items-end justify-content-end w-100">
+                    <li class="nav-item mx-0 mx-md-2 mb-2 mb-md-0">
                         <a href="/gerarmapa">
                             <button type="submit" class="btn primary text-light">Visualizar Mapa</button>
                         </a>
                     </li>
-                    <li class="nav-item mx-2">
+                    <li class="nav-item mx-0 mx-md-2">
                         <a href="/limparmapa">
                             <button type="submit" class="btn btn-outline-danger " style="height:40px">
                                 Limpar Mapa
@@ -69,35 +69,42 @@
             <br>
         </div>
         <div>
-            <form th:action="@{/calculandografo}" method="post" id="sentimentos-form" class="container d-flex flex-column">
-                <input type="hidden" name="sentimentoprincipal" th:value="${relacionandosentimentoform.sentimentoPrincipal}">
+            <form th:action="@{/calculandografo}" method="post" id="sentimentos-form"
+                class="container d-flex flex-column">
+                <input type="hidden" name="sentimentoprincipal"
+                    th:value="${relacionandosentimentoform.sentimentoPrincipal}">
                 <div class="d-flex flex-wrap justify-content-center">
                     <div class="row">
-                        <div th:each="sentimento : ${relacionandosentimentoform.listaDeSentimentos}" class="col-lg-3 col-md-4 col-sm-6">
+                        <div th:each="sentimento : ${relacionandosentimentoform.listaDeSentimentos}"
+                            class="col-lg-3 col-md-4 col-sm-6">
                             <div class="mx-1 mb-1 w-100">
-                                <input type="checkbox" name="sentimentos" class="btn-check d-none" th:id="${sentimento}" th:value="${sentimento}">
-                                <label th:text="${sentimento}" class="btn list-feelings w-100" th:for="${sentimento}"></label>
+                                <input type="checkbox" name="sentimentos" class="btn-check d-none" th:id="${sentimento}"
+                                    th:value="${sentimento}">
+                                <label th:text="${sentimento}" class="btn list-feelings w-100"
+                                    th:for="${sentimento}"></label>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="container py-2" align="center">
-                    <button type="button" class="btn primary text-light my-2 py-3" id="relacionarSentimentoButton">Relacionar Sentimento</button>
+                <div class="container py-2 text-center">
+                    <button type="submit" class="btn primary text-light my-2 py-3"
+                        id="relacionarSentimentoButton">Relacionar Sentimento</button>
                 </div>
             </form>
         </div>
-        
+
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const relacionarSentimentoButton = document.getElementById('relacionarSentimentoButton');
                 const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        
-                relacionarSentimentoButton.addEventListener('click', function () {
+
+                relacionarSentimentoButton.addEventListener('click', function (e) {
+                    e.preventDefault();
                     // Verifica se pelo menos um checkbox está marcado
                     const algumCheckboxMarcado = Array.from(checkboxes).some(function (checkbox) {
                         return checkbox.checked;
                     });
-        
+
                     if (algumCheckboxMarcado) {
                         // Pelo menos um checkbox está marcado, então envie o formulário
                         document.getElementById('sentimentos-form').submit();
