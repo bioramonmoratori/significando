@@ -101,6 +101,9 @@ public class AquarelaController {
 
     @PostMapping("/calculandografo")
     public String calculandoGrafo(@RequestParam("sentimentos") List<Sentimento> sentimentosSelecionados, @RequestParam("sentimentoprincipal") Sentimento sentimentoPrincipal){
+        if(sentimentosSelecionados.isEmpty() || sentimentoPrincipal == null){
+            return "redirect:/sentimentos";
+        }
         try{
             for(Sentimento sentimento : sentimentosSelecionados){
                 
@@ -109,6 +112,7 @@ public class AquarelaController {
             }
         
         } catch(Exception e){
+            return "redirect:/sentimentos";
         }
         return "redirect:/sentimentos";
     }

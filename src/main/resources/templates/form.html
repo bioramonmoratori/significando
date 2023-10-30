@@ -69,31 +69,45 @@
             <br>
         </div>
         <div>
-            <form th:action="@{/calculandografo}" method="post" id="sentimentos-form"
-                class="container d-flex flex-column">
-                <input type="hidden" name="sentimentoprincipal"
-                    th:value="${relacionandosentimentoform.sentimentoPrincipal}">
+            <form th:action="@{/calculandografo}" method="post" id="sentimentos-form" class="container d-flex flex-column">
+                <input type="hidden" name="sentimentoprincipal" th:value="${relacionandosentimentoform.sentimentoPrincipal}">
                 <div class="d-flex flex-wrap justify-content-center">
                     <div class="row">
-                        <div th:each="sentimento : ${relacionandosentimentoform.listaDeSentimentos}"
-                            class="col-lg-3 col-md-4 col-sm-6">
+                        <div th:each="sentimento : ${relacionandosentimentoform.listaDeSentimentos}" class="col-lg-3 col-md-4 col-sm-6">
                             <div class="mx-1 mb-1 w-100">
-                                <input type="checkbox" name="sentimentos" class="btn-check d-none" th:id="${sentimento}"
-                                    th:value="${sentimento}">
-                                <label th:text="${sentimento}" class="btn list-feelings w-100"
-                                    th:for="${sentimento}"></label>
+                                <input type="checkbox" name="sentimentos" class="btn-check d-none" th:id="${sentimento}" th:value="${sentimento}">
+                                <label th:text="${sentimento}" class="btn list-feelings w-100" th:for="${sentimento}"></label>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="container py-2">
-                    <button type="submit" class="btn btn-primary my-2 py-3">Relacionar
-                        Sentimento
-                    </button>
+                    <button type="button" class="btn btn-primary my-2 py-3" id="relacionarSentimentoButton">Relacionar Sentimento</button>
                 </div>
+            </form>
         </div>
-        </form>
-        </div>
+        
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const relacionarSentimentoButton = document.getElementById('relacionarSentimentoButton');
+                const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        
+                relacionarSentimentoButton.addEventListener('click', function () {
+                    // Verifica se pelo menos um checkbox está marcado
+                    const algumCheckboxMarcado = Array.from(checkboxes).some(function (checkbox) {
+                        return checkbox.checked;
+                    });
+        
+                    if (algumCheckboxMarcado) {
+                        // Pelo menos um checkbox está marcado, então envie o formulário
+                        document.getElementById('sentimentos-form').submit();
+                    } else {
+                        // Nenhum checkbox está marcado, exiba uma mensagem de erro ou realize outra ação desejada
+                        alert('Selecione pelo menos um sentimento antes de continuar.');
+                    }
+                });
+            });
+        </script>
     </section>
 
     <!-- Footer-->
