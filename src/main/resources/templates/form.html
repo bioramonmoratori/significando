@@ -60,11 +60,7 @@
     </nav>
     <section class="page-section portfolio mt-5" id="portfolio">
         <div class="container pt-5 pb-4 d-flex align-items-center">
-            <div class="container py-2">
-                <button type="submit" class="btn btn-primary my-2 py-3">Relacionar
-                    Sentimento
-                </button>
-            </div>
+
             <div class="container d-flex flex-column justify-content-center align-items-end">
                 <h6>Marque as palavras relacionadas ao sentimento: </h6>
                 <h1 th:text="${relacionandosentimentoform.sentimentoPrincipal}"></h1>
@@ -88,6 +84,11 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="container py-2">
+                    <button type="submit" class="btn btn-primary my-2 py-3">Relacionar
+                        Sentimento
+                    </button>
                 </div>
         </div>
         </form>
