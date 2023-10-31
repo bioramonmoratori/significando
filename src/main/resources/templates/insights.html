@@ -64,21 +64,34 @@
     <br><br><br><br><br><br>
     <div class="container">
         <h1>Sentimentos Mapeados</h1>
-        <div class="chart-container" style="position: relative; height:40vh; width:80vw">
-            <canvas id="sentimentosChart"></canvas>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="chart-container" style="position: relative; height: 50vh;">
+                    <canvas id="sentimentosChart"></canvas>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h1>Sentimentos com Relações Discrepantes</h1>
+                <div class="chart-container" style="position: relative; height: 30vh;">
+                    <canvas id="sentimentosChartDiscrepantes"></canvas>
+                </div>
+            </div>
+        </div>
+        <br><br><br><br><br><br>
+        <div class="container">
+            <h1>Sentimentos Com Relacionamento Discrepante</h1>
+            <div style="position: relative; height:40vh; width:80vw">
+                <p id="discrepante"></p>
+            </div>
         </div>
     </div>
-    <div class="container">
-        <h1>Sentimentos Com Relacionamento Discrepante</h1>
-        <div style="position: relative; height:40vh; width:80vw">
-            <p id="discrepante"></p>
-        </div>
-    </div>
+
 
     <script>
 
         var numeroDeSentimentosTotais = '[[${numeroDeSentimentosTotais}]]';
         var numeroDeSentimentosMapeados = '[[${numeroDeSentimentosMapeados}]]';
+        var numeroDeSentimentosDiscrepantes = '[[${numeroDeSentimentosDiscrepantes}]]';
         var listaDeSentimentosHub = '[[${listaDeSentimentosHub}]]';
         var listaDeSentimentosComUmVizinho = '[[${listaDeSentimentosComUmVizinho}]]';
         var listaDeSentimentosComMaisDe5ConexoesProporcional = '[[${listaDeSentimentosComMaisDe5ConexoesProporcional}]]';
@@ -92,7 +105,7 @@
         console.log(listaDeSentimentosComMaisDe5ConexoesDiscrepante);
 
 
-        // Dados de exemplo - você pode substituir esses valores pelos seus próprios dados
+        // GRAFICO DE SENTIMENTOS MAPEADOS
         const dados = {
             sentimentosMapeados: numeroDeSentimentosMapeados,
             sentimentosTotais: numeroDeSentimentosTotais,
@@ -115,6 +128,40 @@
                 datasets: [{
                     data: [porcentagemFormatada, 100 - porcentagemMapeados], // Percentagem dos sentimentos negativos e outros sentimentos
                     backgroundColor: ['#800080', '#E8E8E8'], // Cores do gráfico
+                }]
+            },
+            options: {
+                cutout: '80%', // Porcentagem de corte para criar um gráfico de rosca
+                animation: {
+                    animateScale: true // Animação da escala (crescimento do gráfico)
+                },
+            }
+
+        });
+
+        // GRAFICO DE SENTIMENTOS DISCREPANTES
+        const dadosSentimentosDiscrepantes = {
+            sentimentosDiscrepantes: numeroDeSentimentosDiscrepantes,
+            sentimentosTotais: numeroDeSentimentosTotais,
+        };
+        console.log(numeroDeSentimentosDiscrepantes);
+        // Cálculo da porcentagem de sentimentos negativos
+        const porcentagemDiscrepantes = (dadosSentimentosDiscrepantes.sentimentosDiscrepantes / dadosSentimentosDiscrepantes.sentimentosTotais) * 100;
+
+        const casasDecimaisDiscrepantes = 1; // Defina o número desejado de casas decimais
+
+        // Arredonde o valor para o número de casas decimais desejado
+        const porcentagemFormatadaDiscrepantes = porcentagemDiscrepantes.toFixed(casasDecimaisDiscrepantes);
+
+        // Configuração do gráfico
+        const ctxDiscrepantes = document.getElementById('sentimentosChartDiscrepantes').getContext('2d');
+        const chartDiscrepantes = new Chart(ctxDiscrepantes, {
+            type: 'doughnut', // Gráfico de rosca
+            data: {
+                labels: ['Presença de Conexões Discrepantes', 'Ausência de Conexões Discrepantes'],
+                datasets: [{
+                    data: [porcentagemFormatadaDiscrepantes, 100 - porcentagemDiscrepantes], // Percentagem dos sentimentos negativos e outros sentimentos
+                    backgroundColor: ['#0D6EFD', '#800080'], // Cores do gráfico
                 }]
             },
             options: {

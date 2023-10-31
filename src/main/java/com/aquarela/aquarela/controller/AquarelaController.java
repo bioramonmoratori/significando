@@ -136,6 +136,7 @@ public class AquarelaController {
         // Exporte as variáveis para JavaScript
         model.addAttribute("numeroDeSentimentosTotais", insights.getNumeroDeSentimentosTotais());
         model.addAttribute("numeroDeSentimentosMapeados", insights.getNumeroDeSentimentosMapeados());
+        model.addAttribute("numeroDeSentimentosDiscrepantes", insights.getListaDeSentimentosComMaisDe5ConexoesDiscrepante().size());
         model.addAttribute("listaDeSentimentosHub", insights.getListaDeSentimentosHub());
         model.addAttribute("listaDeSentimentosComUmVizinho", insights.getListaDeSentimentosComUmVizinho());
         model.addAttribute("listaDeSentimentosComMaisDe5ConexoesProporcional", insights.getListaDeSentimentosComMaisDe5ConexoesProporcional());
