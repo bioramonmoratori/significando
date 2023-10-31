@@ -117,6 +117,13 @@ public class AquarelaController {
         return "redirect:/sentimentos";
     }
 
+    @GetMapping("/insights")
+    public String insights(){
+    
+        return "insights";
+        
+    }
+
     @GetMapping("/gerarmapa")
     public String gerarMapa(Model model) throws IOException {
         

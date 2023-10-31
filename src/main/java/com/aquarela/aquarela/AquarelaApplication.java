@@ -18,7 +18,6 @@ public class AquarelaApplication {
 		Grafos grafos = new Grafos();
 
 		grafos.registrandoSentimentosPrincipais();
-		grafos.sentimentosComMaisVizinhos();
 		grafos.sentimentosComUmVizinho();
 
 		grafos.criandoRelacoesEntreOsSentimentos(Sentimento.ABANDONO, Sentimento.ABALO);

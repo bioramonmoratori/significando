@@ -7,13 +7,13 @@ import java.util.Map.Entry;
 
 import org.springframework.stereotype.Service;
 
+import com.aquarela.aquarela.model.Categoria;
 import com.aquarela.aquarela.model.Sentimento;
 
 @Service
 public class Grafos {
     
     private HashMap<Sentimento, List<Sentimento>> mapaDeSentimentos = new HashMap<>();
-
 
     public HashMap<Sentimento, List<Sentimento>> getMapaDeSentimentos() {
         return mapaDeSentimentos;
@@ -35,6 +35,17 @@ public class Grafos {
 
     }
 
+    public List<Sentimento> listaDeSentimentosPrincipais(){
+
+        List<Sentimento> listaDeSentimentosPrincipais = new ArrayList<>();
+        for(Entry<Sentimento, List<Sentimento>> index : this.mapaDeSentimentos.entrySet()){
+            
+            listaDeSentimentosPrincipais.add(index.getKey());
+            
+        }
+        
+        return listaDeSentimentosPrincipais;
+    }
 
     public HashMap<Sentimento, List<Sentimento>> criandoRelacoesEntreOsSentimentos(Sentimento sentimentoPrincipal, Sentimento sentimentoCompativel){
         
@@ -49,33 +60,6 @@ public class Grafos {
         
         List<Sentimento> vertice = this.mapaDeSentimentos.get(sentimentoPrincipal);
         return vertice;
-    }
-
-    public List<Sentimento> sentimentosComMaisVizinhos(){
-        
-        List<Sentimento> sentimentosComMaisVizinhos = new ArrayList<>();
-        for(Entry<Sentimento, List<Sentimento>> index : this.mapaDeSentimentos.entrySet()){
-            if(index.getValue().size() > 2){
-                sentimentosComMaisVizinhos.add(index.getKey());
-            }
-        }
-        System.out.println("Sentimentos Com Mais Vizinhos:" + sentimentosComMaisVizinhos);
-        
-        return sentimentosComMaisVizinhos;
-    }
-
-
-    public List<Sentimento> sentimentosComUmVizinho(){
-
-        List<Sentimento> sentimentosComUmVizinho = new ArrayList<>();
-        for(Entry<Sentimento, List<Sentimento>> index : this.mapaDeSentimentos.entrySet()){
-            if(index.getValue().size() == 1){
-                sentimentosComUmVizinho.add(index.getKey());
-            }
-        }
-        System.out.println("Sentimentos Com Um Vizinhos:" + sentimentosComUmVizinho);
-        
-        return sentimentosComUmVizinho;
     }
 
     public List<Sentimento> consultarSentimento(Sentimento sentimentoPrincipal){
@@ -100,19 +84,99 @@ public class Grafos {
         return null;
     }
 
+    /*
+     * Metodos para processamento dos insights
+     */
 
-    public List<Sentimento> listaDeSentimentosPrincipais(){
+    public List<Sentimento> sentimentosHub(){
+        
+        List<Sentimento> sentimentosHub = new ArrayList<>();
+        for(Entry<Sentimento, List<Sentimento>> index : this.mapaDeSentimentos.entrySet()){
+            if(index.getValue().size() >= 10){
+                sentimentosHub.add(index.getKey());
+            }
+        }
+        return sentimentosHub;
+    }
 
-        List<Sentimento> listaDeSentimentosPrincipais = new ArrayList<>();
+    public List<Sentimento> sentimentosComMaisDe5Conexoes(){
+        
+        List<Sentimento> sentimentosMaisDe5 = new ArrayList<>();
+        for(Entry<Sentimento, List<Sentimento>> index : this.mapaDeSentimentos.entrySet()){
+            if(index.getValue().size() >= 10){
+                sentimentosMaisDe5.add(index.getKey());
+            }
+        }
+        return sentimentosMaisDe5;
+    }
+
+    public List<Sentimento> sentimentosComMaisDe5ConexoesComRelacionamentoDiscrepante(){
+        
+        List<Sentimento> sentimentosMaisDe5Discrepante = new ArrayList<>();
+
+
         for(Entry<Sentimento, List<Sentimento>> index : this.mapaDeSentimentos.entrySet()){
             
-            listaDeSentimentosPrincipais.add(index.getKey());
+            Integer sentimentosPositivos = 0;
+            Integer sentimentosNegativos = 0;
+
+            for(Sentimento sentimento : index.getValue()){
+
+                if(sentimento.getCategoria() == Categoria.POSITIVO){
+                    sentimentosPositivos++;
+                } else if(sentimento.getCategoria() == Categoria.NEGATIVO){
+                    sentimentosNegativos++;
+                }
+
+                if(sentimentosPositivos >= 3*sentimentosNegativos || sentimentosNegativos >= 3*sentimentosPositivos){
+                    sentimentosMaisDe5Discrepante.add(index.getKey());
+                }
+            }
+        }
+
+        return sentimentosMaisDe5Discrepante;
+    }
+
+    public List<Sentimento> sentimentosComMaisDe5ConexoesProporcional(){
+        
+        List<Sentimento> sentimentosMaisDe5Discrepante = new ArrayList<>();
+
+
+        for(Entry<Sentimento, List<Sentimento>> index : this.mapaDeSentimentos.entrySet()){
             
+            Integer sentimentosPositivos = 0;
+            Integer sentimentosNegativos = 0;
+
+            for(Sentimento sentimento : index.getValue()){
+
+                if(sentimento.getCategoria() == Categoria.POSITIVO){
+                    sentimentosPositivos++;
+                } else if(sentimento.getCategoria() == Categoria.NEGATIVO){
+                    sentimentosNegativos++;
+                }
+
+                if(sentimentosPositivos >= (1.2)*sentimentosNegativos && sentimentosPositivos <= (1.2)*sentimentosNegativos 
+                    || sentimentosNegativos >= (1.2)*sentimentosPositivos && sentimentosNegativos <= (1.2)*sentimentosPositivos){
+                    sentimentosMaisDe5Discrepante.add(index.getKey());
+                }
+            }
+        }
+
+        return sentimentosMaisDe5Discrepante;
+    }
+
+    public List<Sentimento> sentimentosComUmVizinho(){
+
+        List<Sentimento> sentimentosComUmVizinho = new ArrayList<>();
+        for(Entry<Sentimento, List<Sentimento>> index : this.mapaDeSentimentos.entrySet()){
+            if(index.getValue().size() >= 1 && index.getValue().size() <= 2){
+                sentimentosComUmVizinho.add(index.getKey());
+            }
         }
         
-        return listaDeSentimentosPrincipais;
+        return sentimentosComUmVizinho;
     }
-    
+
 }
 
 
