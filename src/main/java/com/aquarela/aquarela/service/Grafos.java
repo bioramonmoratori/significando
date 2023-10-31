@@ -115,12 +115,12 @@ public class Grafos {
         List<Sentimento> sentimentosMaisDe5Discrepante = new ArrayList<>();
 
 
-        for(Entry<Sentimento, List<Sentimento>> index : this.mapaDeSentimentos.entrySet()){
+        for(Sentimento index : this.sentimentosComMaisDe5Conexoes()){
             
             Integer sentimentosPositivos = 0;
             Integer sentimentosNegativos = 0;
 
-            for(Sentimento sentimento : index.getValue()){
+            for(Sentimento sentimento : this.mapaDeSentimentos.get(index)){
 
                 if(sentimento.getCategoria() == Categoria.POSITIVO){
                     sentimentosPositivos++;
@@ -128,9 +128,10 @@ public class Grafos {
                     sentimentosNegativos++;
                 }
 
-                if(sentimentosPositivos >= 3*sentimentosNegativos || sentimentosNegativos >= 3*sentimentosPositivos){
-                    sentimentosMaisDe5Discrepante.add(index.getKey());
-                }
+            }
+
+            if(sentimentosPositivos >= 3*sentimentosNegativos || sentimentosNegativos >= 3*sentimentosPositivos){
+                sentimentosMaisDe5Discrepante.add(index);
             }
         }
 
