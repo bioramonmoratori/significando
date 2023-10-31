@@ -105,7 +105,7 @@
         const chart = new Chart(ctx, {
             type: 'doughnut', // Gráfico de rosca
             data: {
-                labels: ['Sentimentos Mapeados', 'Sentimentos Totais'],
+                labels: ['Mapeados', 'Não-Mapeados'],
                 datasets: [{
                     data: [porcentagemFormatada, 100 - porcentagemMapeados], // Percentagem dos sentimentos negativos e outros sentimentos
                     backgroundColor: ['#800080', '#E8E8E8'], // Cores do gráfico
