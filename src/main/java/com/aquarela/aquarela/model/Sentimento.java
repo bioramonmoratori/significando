@@ -186,5 +186,4 @@ public enum Sentimento {
         return categoria;
     }
 
-
 }

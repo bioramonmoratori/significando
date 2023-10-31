@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.aquarela.aquarela.model.Insights;
 import com.aquarela.aquarela.model.RelacionandoSentimentoForm;
 import com.aquarela.aquarela.model.Sentimento;
 import com.aquarela.aquarela.service.Grafos;
@@ -25,7 +26,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
 
 @Controller
 @RequestMapping("/")
@@ -118,8 +118,29 @@ public class AquarelaController {
     }
 
     @GetMapping("/insights")
-    public String insights(){
-    
+    public String insights(Model model){
+        
+        Insights insights = new Insights();
+        try{
+            insights.setNumeroDeSentimentosTotais(grafos.listaDeSentimentosPrincipais().size());
+            insights.setNumeroDeSentimentosMapeados(grafos.sentimentosJaMapeados().size());
+            insights.setListaDeSentimentosHub(grafos.sentimentosHub());
+            insights.setListaDeSentimentosComUmVizinho(grafos.sentimentosComUmVizinho());
+            insights.setListaDeSentimentosComMaisDe5ConexoesProporcional(grafos.sentimentosComMaisDe5ConexoesProporcional());
+            insights.setListaDeSentimentosComMaisDe5ConexoesDiscrepante(grafos.sentimentosComMaisDe5ConexoesComRelacionamentoDiscrepante());
+        }catch(Exception e){
+
+        }
+
+        
+        // Exporte as variáveis para JavaScript
+        model.addAttribute("numeroDeSentimentosTotais", insights.getNumeroDeSentimentosTotais());
+        model.addAttribute("numeroDeSentimentosMapeados", insights.getNumeroDeSentimentosMapeados());
+        model.addAttribute("listaDeSentimentosHub", insights.getListaDeSentimentosHub());
+        model.addAttribute("listaDeSentimentosComUmVizinho", insights.getListaDeSentimentosComUmVizinho());
+        model.addAttribute("listaDeSentimentosComMaisDe5ConexoesProporcional", insights.getListaDeSentimentosComMaisDe5ConexoesProporcional());
+        model.addAttribute("listaDeSentimentosComMaisDe5ConexoesDiscrepante", insights.getListaDeSentimentosComMaisDe5ConexoesDiscrepante());
+            
         return "insights";
         
     }

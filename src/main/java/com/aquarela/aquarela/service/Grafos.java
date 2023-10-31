@@ -176,6 +176,18 @@ public class Grafos {
         
         return sentimentosComUmVizinho;
     }
+    
+    public List<Sentimento> sentimentosJaMapeados(){
+            
+            List<Sentimento> sentimentosJaMapeados = new ArrayList<>();
+            for(Entry<Sentimento, List<Sentimento>> index : this.mapaDeSentimentos.entrySet()){
+                if(index.getValue().size() >= 1){
+                    sentimentosJaMapeados.add(index.getKey());
+                }
+            }
+            
+            return sentimentosJaMapeados;
+    }
 
 }
 
