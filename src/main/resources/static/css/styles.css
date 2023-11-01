@@ -46,3 +46,14 @@
   background-color: var(--primary-color)
 }
 
+
+.form__container{
+  position: relative;
+}
+
+.btn-float{
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 90px;
+}

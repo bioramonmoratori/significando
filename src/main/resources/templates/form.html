@@ -1,4 +1,6 @@
-<html>
+<!DOCTYPE html>
+
+<html lang="pt-br">
 
 <head>
     <title>Significando</title>
@@ -43,13 +45,18 @@
                 <ul
                     class="navbar-nav me-auto navbar-nav-scroll d-flex align-items-end-md-center align-items-end justify-content-end w-100">
                     <li class="nav-item mx-0 mx-md-2 mb-2 mb-md-0">
+                        <label for="relacionarSentimentoButton">
+                            <button id="btn-relacionar" type="submit" class="btn btn-outline-success">Relacionar Sentimentos</button>
+                        </label>
+                    </li>
+                    <li class="nav-item mx-0 mx-md-2 mb-2 mb-md-0">
                         <a href="/gerarmapa">
-                            <button type="submit" class="btn primary text-light">Visualizar Mapa</button>
+                            <button type="submit" id="viewMap" class="btn primary text-light">Visualizar Mapa</button>
                         </a>
                     </li>
                     <li class="nav-item mx-0 mx-md-2">
                         <a href="/limparmapa">
-                            <button type="submit" class="btn btn-outline-primary" style="height:40px">
+                            <button type="submit" class="btn btn-outline-danger" style="height:40px">
                                 Limpar Mapa
                             </button>
                         </a>
@@ -61,86 +68,84 @@
     </nav>
     <section class="page-section portfolio mt-5" id="portfolio">
         <div class="container pt-5 pb-4 d-flex align-items-center">
-
-            <div class="container d-flex flex-column justify-content-center align-items-end">
-                <h6>Marque as palavras relacionadas ao sentimento: </h6>
-                <h1 th:text="${relacionandosentimentoform.sentimentoPrincipal}"></h1>
+            <div class="container d-flex flex-column justify-content-center align-items-end primary-color">
+                <p class="mb-0">Marque as palavras relacionadas ao sentimento: </p>
+                <h1 th:text="${relacionandosentimentoform.sentimentoPrincipal}" class="fw-bold"></h1>
             </div>
             <br>
         </div>
-        <div>
-            <form th:action="@{/calculandografo}" method="post" id="sentimentos-form"
-                class="container d-flex flex-column">
-                <input type="hidden" name="sentimentoprincipal"
-                    th:value="${relacionandosentimentoform.sentimentoPrincipal}">
-                <div class="d-flex flex-wrap justify-content-center">
-                    <div class="row">
-                        <div th:each="sentimento : ${relacionandosentimentoform.listaDeSentimentos}"
-                            class="col-lg-3 col-md-4 col-sm-6">
-                            <div class="mx-1 mb-1 w-100">
-                                <input type="checkbox" name="sentimentos" class="btn-check d-none" th:id="${sentimento}"
-                                    th:value="${sentimento}">
-                                <label th:text="${sentimento}" class="btn list-feelings w-100"
-                                    th:for="${sentimento}"></label>
+        <form th:action="@{/calculandografo}" method="post" id="sentimentos-form"
+            class="container d-flex flex-column form__container mb-2">
+            <input type="hidden" name="sentimentoprincipal"
+                th:value="${relacionandosentimentoform.sentimentoPrincipal}">
+            <div class="d-flex flex-wrap justify-content-center">
+                <div class="row">
+                    <div th:each="sentimento : ${relacionandosentimentoform.listaDeSentimentos}"
+                        class="col-lg-3 col-md-4 col-sm-6">
+                        <div class="mx-1 mb-1 w-100">
+                            <input type="checkbox" name="sentimentos" class="btn-check d-none" th:id="${sentimento}"
+                                th:value="${sentimento}">
+                            <label th:text="${sentimento}" class="btn list-feelings w-100"
+                                th:for="${sentimento}"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="submit" class="d-none" id="relacionarSentimentoButton">
+        </form>
+    </section>
+
+    <div class="my-4 pt-2">
+        <hr class="w-100 primary-color">
+        <div class="container">
+            <h3 class="display-6">Como funciona</h3>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    Assim que marca os sentimentos clique em
+                    <label for="btn-relacionar" class="text-success fw-bold">Relacionar Sentimentos</label>
+                </li>
+                <li class="list-group-item">
+                    Visualize sua seleção em
+                    <label for="viewMap" class="primary-color fw-bold">Visualizar Mapa</label>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Footer-->
+    <footer class="footer bg-body-secondary text-center primary-color mt-5 py-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 align-content-center mb-1 mb-md-5 mb-lg-0">
+                    <div class="d-flex justify-content-center flex-column flex-md-row">
+                        <div class="mb-1 mb-md-0">
+                            <span class="fw-bolder" title="Ramon">Back-end</span>
+                            <div class="mx-3 my-2 my-md-0">
+                                <a class="btn primary btn-social mx-1"
+                                    href="https://www.linkedin.com/in/ramon-moratori-86a558243/"><i
+                                        class="fab fa-fw fa-linkedin-in"></i></a>
+                                <a class="btn primary btn-social mx-1" href="https://www.github.com/bioramonmoratori"><i
+                                        class="fab fa-fw fa-github"></i></a>
+                            </div>
+                        </div>
+                        <div class="mx-3 my-2 my-md-0" title="Kleby">
+                            <span class="fw-bolder">Front-end</span>
+                            <div class="mb-1 mb-md-0">
+                                <a class="btn primary btn-social mx-1" href="https://www.linkedin.com/in/jkleby"><i
+                                        class="fab fa-fw fa-linkedin-in"></i></a>
+                                <a class="btn primary btn-social mx-1" href="https://github.com/Kleby"><i
+                                        class="fab fa-fw fa-github"></i></a>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="container py-2 text-center">
-                    <button type="submit" class="btn primary text-light my-2 py-3"
-                        id="relacionarSentimentoButton">Relacionar Sentimento</button>
-                </div>
-            </form>
-        </div>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const relacionarSentimentoButton = document.getElementById('relacionarSentimentoButton');
-                const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-
-                relacionarSentimentoButton.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    // Verifica se pelo menos um checkbox está marcado
-                    const algumCheckboxMarcado = Array.from(checkboxes).some(function (checkbox) {
-                        return checkbox.checked;
-                    });
-
-                    if (algumCheckboxMarcado) {
-                        // Pelo menos um checkbox está marcado, então envie o formulário
-                        document.getElementById('sentimentos-form').submit();
-                    } else {
-                        // Nenhum checkbox está marcado, exiba uma mensagem de erro ou realize outra ação desejada
-                        alert('Selecione pelo menos um sentimento antes de continuar.');
-                    }
-                });
-            });
-        </script>
-    </section>
-
-    <!-- Footer-->
-    <footer class="footer bg-body-secondary text-center primary-color mt-5 py-4">
-        <div class="container">
-            <div class="row">
-                <!-- Footer Location-->
-                <div class="col-lg-4 mb-5 mb-lg-0">
-                </div>
-                <!-- Footer Social Icons-->
-                <div class="col-lg-4 mb-5 mb-lg-0">
-                    <a class="btn primary btn-social mx-1"
-                        href="https://www.linkedin.com/in/ramon-moratori-86a558243/"><i
-                            class="fab fa-fw fa-linkedin-in"></i></a>
-                    <a class="btn primary btn-social mx-1" href="https://www.github.com/bioramonmoratori"><i
-                            class="fab fa-fw fa-github"></i></a>
-                </div>
-                <!-- Footer About Text-->
-                <div class="col-lg-4">
-                </div>
             </div>
-        </div>
-        <div class="copyright pt-2 text-center primary-color ">
-            <div class="container"><small>&copy; Significando 2023</small></div>
-        </div>
+            <div class="copyright pt-2 text-center primary-color ">
+                <div class="container"><small>&copy; Significando 2023</small></div>
+            </div>
     </footer>
+
+    <script src="js/scripts.js"></script>
 </body>
 
 </html>

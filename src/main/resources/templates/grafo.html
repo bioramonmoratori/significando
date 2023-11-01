@@ -70,10 +70,8 @@
         }
     </style>
     <script>
-        var elements2 = '[(${graph})]';
-        json = JSON.parse(elements2);
-
-        //console.log(elements2);
+        var elements = '[(${graph})]';
+        const json = JSON.parse(elements);
 
         var cy = cytoscape({
             container: document.getElementById('cy'),
@@ -89,11 +87,11 @@
                             // Obtém a categoria do nó
                             var category = node.data('categoria');
                             if (category === 'NEGATIVO') {
-                                return 'red'; // Cor para a categoria negativa
+                                return 'brown'; // Cor para a categoria negativa
                             } else if (category === 'NEUTRO') {
-                                return 'gray'; // Cor para a categoria neutra
+                                return 'green'; // Cor para a categoria neutra
                             } else if (category === 'POSITIVO') {
-                                return 'green'; // Cor para a categoria positiva
+                                return 'orange'; // Cor para a categoria positiva
                             } else {
                                 return 'purple'; // Cor padrão é roxo
                             }

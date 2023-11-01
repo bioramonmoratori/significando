@@ -34,7 +34,7 @@ public class AquarelaController {
     @Autowired
     Grafos grafos;
     
-    @GetMapping("/")
+    @GetMapping()
     public String inicio(){
         return "index";
     }

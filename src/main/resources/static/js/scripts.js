@@ -1,66 +1,25 @@
-/*!
-* Start Bootstrap - Freelancer v7.0.7 (https://startbootstrap.com/theme/freelancer)
-* Copyright 2013-2023 Start Bootstrap
-* Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-freelancer/blob/master/LICENSE)
-*/
-//
-// Scripts
-// 
+document.addEventListener('DOMContentLoaded', function () {
+    const relacionarSentimentoButton = document.getElementById('relacionarSentimentoButton');
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const btnRelacionar = document.getElementById("btn-relacionar");
+    
 
-// window.addEventListener('DOMContentLoaded', event => {
+    function onSubmit(){
+        // Verifica se pelo menos um checkbox está marcado
+        const algumCheckboxMarcado = Array.from(checkboxes).some(function (checkbox) {
+            return checkbox.checked;
+        });
 
-//     // Navbar shrink function
-//     var navbarShrink = function () {
-//         const navbarCollapsible = document.body.querySelector('#mainNav');
-//         if (!navbarCollapsible) {
-//             return;
-//         }
-//         if (window.scrollY === 0) {
-//             navbarCollapsible.classList.remove('navbar-shrink')
-//         } else {
-//             navbarCollapsible.classList.add('navbar-shrink')
-//         }
+        if (algumCheckboxMarcado) {
+            // Pelo menos um checkbox está marcado, então envie o formulário
+            document.getElementById('sentimentos-form').submit();
+        } else {
+            // Nenhum checkbox está marcado, exiba uma mensagem de erro ou realize outra ação desejada
+            alert('Selecione pelo menos um sentimento antes de continuar.');
+        }
+    }
 
-//     };
-
-//     // Shrink the navbar 
-//     navbarShrink();
-
-//     // Shrink the navbar when page is scrolled
-//     document.addEventListener('scroll', navbarShrink);
-
-//     // Activate Bootstrap scrollspy on the main nav element
-//     const mainNav = document.body.querySelector('#mainNav');
-//     if (mainNav) {
-//         new bootstrap.ScrollSpy(document.body, {
-//             target: '#mainNav',
-//             rootMargin: '0px 0px -40%',
-//         });
-//     };
-
-//     // Collapse responsive navbar when toggler is visible
-//     const navbarToggler = document.body.querySelector('.navbar-toggler');
-//     const responsiveNavItems = [].slice.call(
-//         document.querySelectorAll('#navbarResponsive .nav-link')
-//     );
-//     responsiveNavItems.map(function (responsiveNavItem) {
-//         responsiveNavItem.addEventListener('click', () => {
-//             if (window.getComputedStyle(navbarToggler).display !== 'none') {
-//                 navbarToggler.click();
-//             }
-//         });
-//     });
-
-// // });
-// document.addEventListener('DOMContentLoaded', function () {
-//     const navbarToggler = document.querySelector('.navbar-toggler');
-//     const navbarCollapse = document.querySelector('.navbar-collapse');
-
-//     navbarToggler.addEventListener('click', function () {
-//         if (navbarCollapse.style.display === 'block') {
-//             navbarCollapse.style.display = 'none';
-//         } else {
-//             navbarCollapse.style.display = 'block';
-//         }
-//     });
-// });
+    
+    btnRelacionar.addEventListener("click", onSubmit)
+    relacionarSentimentoButton.addEventListener('click', onSubmit);
+});
