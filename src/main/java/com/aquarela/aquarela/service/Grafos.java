@@ -160,9 +160,6 @@ public class Grafos {
                 || sentimentosNegativos >= (0.8)*sentimentosPositivos && sentimentosNegativos <= (1.2)*sentimentosPositivos){
                     sentimentosMaisDe5Proporcional.add(index);
             }
-
-            System.out.println(sentimentosNegativos);
-            System.out.println(sentimentosPositivos);
         }
 
         return sentimentosMaisDe5Proporcional;

@@ -137,6 +137,9 @@ public class AquarelaController {
         model.addAttribute("numeroDeSentimentosMapeados", insights.getNumeroDeSentimentosMapeados());
         model.addAttribute("numeroDeSentimentosDiscrepantes", insights.getListaDeSentimentosComMaisDe5ConexoesDiscrepante().size());
         model.addAttribute("numeroDeSentimentosProporcional", insights.getListaDeSentimentosComMaisDe5ConexoesProporcional().size());
+        model.addAttribute("numeroDeSentimentosHub", insights.getListaDeSentimentosHub().size());
+        model.addAttribute("numeroDeSentimentosComUmVizinho", insights.getListaDeSentimentosComUmVizinho().size());
+        
         model.addAttribute("listaDeSentimentosHub", insights.getListaDeSentimentosHub());
         model.addAttribute("listaDeSentimentosComUmVizinho", insights.getListaDeSentimentosComUmVizinho());
         model.addAttribute("listaDeSentimentosComMaisDe5ConexoesProporcional", insights.getListaDeSentimentosComMaisDe5ConexoesProporcional());

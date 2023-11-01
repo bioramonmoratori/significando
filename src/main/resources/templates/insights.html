@@ -66,30 +66,41 @@
         <h1>Sentimentos Mapeados</h1>
         <div class="row">
             <div class="col-md-6">
-                <div class="chart-container" style="position: relative; height: 70vh;">
+                <div class="chart-container" style="position: relative; height: 65vh;">
                     <canvas id="sentimentosChart"></canvas>
                 </div>
             </div>
             <div class="col-md-6" align="right">
-                <div>
-                    <h4>Sentimentos com Relações Discrepantes</h1>
+
+                <div align="center">
+                    <h4>Quantidade de Relacionamentos em Destaque</h1>
                     <div class="chart-container" style="position: relative; height: 25vh;">
-                        <canvas id="sentimentosChartDiscrepantes"></canvas>
+                        <canvas id="sentimentosChartHubVizinho"></canvas>
                     </div>
-                    <p id="discrepante"></p>
                 </div>
-                <div>
-                    <h4>Sentimentos com Relações Proporcionais</h1>
-                    <div class="chart-container" style="position: relative; height: 25vh;">
-                        <canvas id="sentimentosChartProporcional"></canvas>
+                <br>
+                <hr style="background-color: #000; height: 2px; margin: 10px 0;">
+                <div style="display: flex; justify-content: space-between;"> 
+                    <div>
+                        <h4>Sentimentos com Relações Discrepantes</h1>
+                        <div class="chart-container" style="position: relative; height: 25vh;">
+                            <canvas id="sentimentosChartDiscrepantes"></canvas>
+                        </div>
+                        <p id="discrepante"></p>
                     </div>
-                    <p id="proporcional"></p>
+                    <div>
+                        <h4>Sentimentos com Relações Proporcionais</h1>
+                        <div class="chart-container" style="position: relative; height: 25vh;">
+                            <canvas id="sentimentosChartProporcional"></canvas>
+                        </div>
+                        <p id="proporcional"></p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <hr style="background-color: #000; height: 2px; margin: 10px 0;">
-    <hr style="background-color: #000; height: 2px; margin: 10px 0;">
+    <br>
 
     <script>
 
@@ -97,6 +108,8 @@
         var numeroDeSentimentosMapeados = '[[${numeroDeSentimentosMapeados}]]';
         var numeroDeSentimentosDiscrepantes = '[[${numeroDeSentimentosDiscrepantes}]]';
         var numeroDeSentimentosProporcional = '[[${numeroDeSentimentosProporcional}]]';
+        var numeroDeSentimentosHub = '[[${numeroDeSentimentosHub}]]';
+        var numeroDeSentimentosComUmVizinho = '[[${numeroDeSentimentosComUmVizinho}]]';
         var listaDeSentimentosHub = '[[${listaDeSentimentosHub}]]';
         var listaDeSentimentosComUmVizinho = '[[${listaDeSentimentosComUmVizinho}]]';
         var listaDeSentimentosComMaisDe5ConexoesProporcional = '[[${listaDeSentimentosComMaisDe5ConexoesProporcional}]]';
@@ -214,8 +227,74 @@
         const proporcional = document.getElementById('proporcional');
 
         proporcional.innerHTML = listaDeSentimentosComMaisDe5ConexoesProporcional;
+
+
+        // GRAFICO DE SENTIMENTOS HUB E COM UM VIZINHO
+        const dadosHubVizinho = {
+            sentimentosHub: numeroDeSentimentosHub,
+            sentimentosComUmVizinho: numeroDeSentimentosComUmVizinho,
+        };
+        console.log(dadosHubVizinho.sentimentosHub);
+        // Configuração do gráfico
+        const ctxHubVizinho = document.getElementById('sentimentosChartHubVizinho').getContext('2d');
+        const chartHubVizinho = new Chart(ctxHubVizinho, {
+            type: 'bar', // Gráfico de rosca
+            data: {
+                labels: ['Sentimentos Hub', 'Sentimentos Isolados', 'Dados Não Mapeados'],
+                datasets: [{
+                    data: [dadosHubVizinho.sentimentosHub, dadosHubVizinho.sentimentosComUmVizinho, (dados.sentimentosTotais - dados.sentimentosMapeados)], // Percentagem dos sentimentos negativos e outros sentimentos
+                    backgroundColor: ['#0D6EFD', '#800080', 'gray'], // Cores do gráfico
+                }]
+            },
+            options: {
+                cutout: '80%', // Porcentagem de corte para criar um gráfico de rosca
+                animation: {
+                    animateScale: true // Animação da escala (crescimento do gráfico)
+                },
+                plugins: {
+                    legend: {
+                        display: false // Defina como true para exibir a legenda
+                    }
+                }
+            }
+
+        });
+        
+        
+
     </script>
-    
-   
+
+    <!-- Footer-->
+    <footer class="footer bg-body-secondary text-center primary-color mt-5 py-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 align-content-center mb-1 mb-md-5 mb-lg-0">
+                    <span class="fw-bolder">Nossos Contatos</span>
+                    <div class="d-flex justify-content-center flex-column flex-md-row">
+                        <div class="mb-1 mb-md-0">
+                            <div class="mx-3 my-2 my-md-0">
+                                <a class="btn primary btn-social mx-1"
+                                    href="https://www.linkedin.com/in/ramon-moratori-86a558243/"><i
+                                        class="fab fa-fw fa-linkedin-in"></i></a>
+                                <a class="btn primary btn-social mx-1" href="https://www.github.com/bioramonmoratori"><i
+                                        class="fab fa-fw fa-github"></i></a>
+                            </div>
+                        </div>
+                        <div class="mx-3 my-2 my-md-0" title="Kleby">
+                            <div class="mb-1 mb-md-0">
+                                <a class="btn primary btn-social mx-1" href="https://www.linkedin.com/in/jkleby"><i
+                                        class="fab fa-fw fa-linkedin-in"></i></a>
+                                <a class="btn primary btn-social mx-1" href="https://github.com/Kleby"><i
+                                        class="fab fa-fw fa-github"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright pt-2 text-center primary-color ">
+                <div class="container"><small>&copy; Significando 2023</small></div>
+            </div>
+    </footer>
+
 </body>
 </html>
