@@ -10,6 +10,7 @@
   --primary-hover: #500050;
   --bs-btn-active-bg: #cc77cc;
   --bs-btn-active-color: #FFF;
+  --btn-hover-color: #d4d4d4;
 }
 
 .btn.primary{
@@ -17,8 +18,19 @@
   color: var(--primary-color) !important;
 }
 
-.primary-bg{
+.btn.primary-bg{
   background-color: var(--primary-color);
+  color: #FFF;
+}
+
+.btn.primary-bg:hover{
+  background-color: var(--primary-hover);
+  color: var(--btn-hover-color);
+  transition-duration: 400ms;
+}
+
+.primary-color-bg{
+  color: var(--primary-hover);
 }
 
 .primary-color{
