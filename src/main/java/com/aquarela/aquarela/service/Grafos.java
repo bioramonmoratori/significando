@@ -103,7 +103,7 @@ public class Grafos {
         
         List<Sentimento> sentimentosMaisDe5 = new ArrayList<>();
         for(Entry<Sentimento, List<Sentimento>> index : this.mapaDeSentimentos.entrySet()){
-            if(index.getValue().size() >= 10){
+            if(index.getValue().size() >= 5){
                 sentimentosMaisDe5.add(index.getKey());
             }
         }
@@ -140,30 +140,32 @@ public class Grafos {
 
     public List<Sentimento> sentimentosComMaisDe5ConexoesProporcional(){
         
-        List<Sentimento> sentimentosMaisDe5Discrepante = new ArrayList<>();
+        List<Sentimento> sentimentosMaisDe5Proporcional = new ArrayList<>();
 
 
-        for(Entry<Sentimento, List<Sentimento>> index : this.mapaDeSentimentos.entrySet()){
+        for(Sentimento index : this.sentimentosComMaisDe5Conexoes()){
             
             Integer sentimentosPositivos = 0;
             Integer sentimentosNegativos = 0;
 
-            for(Sentimento sentimento : index.getValue()){
+            for(Sentimento sentimento : this.mapaDeSentimentos.get(index)){
 
                 if(sentimento.getCategoria() == Categoria.POSITIVO){
                     sentimentosPositivos++;
                 } else if(sentimento.getCategoria() == Categoria.NEGATIVO){
                     sentimentosNegativos++;
                 }
-
-                if(sentimentosPositivos >= (1.2)*sentimentosNegativos && sentimentosPositivos <= (1.2)*sentimentosNegativos 
-                    || sentimentosNegativos >= (1.2)*sentimentosPositivos && sentimentosNegativos <= (1.2)*sentimentosPositivos){
-                    sentimentosMaisDe5Discrepante.add(index.getKey());
-                }
             }
+            if(sentimentosPositivos >= (0.8)*sentimentosNegativos && sentimentosPositivos <= (1.2)*sentimentosNegativos 
+                || sentimentosNegativos >= (0.8)*sentimentosPositivos && sentimentosNegativos <= (1.2)*sentimentosPositivos){
+                    sentimentosMaisDe5Proporcional.add(index);
+            }
+
+            System.out.println(sentimentosNegativos);
+            System.out.println(sentimentosPositivos);
         }
 
-        return sentimentosMaisDe5Discrepante;
+        return sentimentosMaisDe5Proporcional;
     }
 
     public List<Sentimento> sentimentosComUmVizinho(){
