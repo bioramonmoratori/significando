@@ -31,28 +31,42 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <style>
-        .popup {
-            display: none;
-            position: absolute;
-            background-color: #000000;
-            border: 1px solid #ccc;
-            padding: 15px;
-            z-index: 1;
-        }
-
-        #info-icon:hover + #info-popup {
-            display: block;
-        }
-    </style>
 </head>
 
 <body id="page-top">
 
     <!-- POPUPS -->
-    <div class="popup" id="info-popup">
-        <p>Este é um pop-up de informação.</p>
-    </div>
+    <style>
+        .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .modal-content {
+        background-color: #fff;
+        margin: 20% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 60%;
+        }
+
+        .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        }
+
+        .close:hover {
+        color: #000;
+        }
+    </style>
+
 
     <!-- Navigation-->
     <nav class="navbar navbar-expand-md bg-body-secondary border-bottom py-3 text-uppercase fixed-top" id="mainNav">
@@ -85,7 +99,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <h1 align="center">Sentimentos Mapeados <i class="fas fa-info-circle me-2"></i></h1>
+                <h1 align="center">Sentimentos Mapeados <a id="mapeadosalert"><i class="fas fa-info-circle me-2"></i></a></h1>
                 <div class="chart-container" style="position: relative; height: 65vh;">
                     <canvas id="sentimentosChart"></canvas>
                 </div>
@@ -93,7 +107,7 @@
             <div class="col-md-6" align="right">
 
                 <div align="center">
-                    <h4>Quantidade de Relacionamentos em Destaque <i class="fas fa-info-circle me-2" id="info-icon"></i></h4>
+                    <h4>Grupos de Sentimentos Mapeados <a id="hubalert"><i class="fas fa-info-circle me-2"></i></a></h4>
                     <div class="chart-container" style="position: relative; height: 25vh;">
                         <canvas id="sentimentosChartHubVizinho"></canvas>
                     </div>
@@ -102,14 +116,14 @@
                 <hr style="background-color: #000; height: 2px; margin: 10px 0;">
                 <div style="display: flex; justify-content: space-between;"> 
                     <div>
-                        <h4>Sentimentos com Relações Discrepantes <i class="fas fa-info-circle me-2"></i></h4>
+                        <h4>Sentimentos com Relações Discrepantes <a id="discrepantealert"><i class="fas fa-info-circle me-2"></i></a></h4>
                         <div class="chart-container" style="position: relative; height: 25vh;">
                             <canvas id="sentimentosChartDiscrepantes"></canvas>
                         </div>
                         <p id="discrepante"></p>
                     </div>
                     <div>
-                        <h4>Sentimentos com Relações Proporcionais <i class="fas fa-info-circle me-2"></i></h4>
+                        <h4>Sentimentos com Relações Proporcionais <a id="proporcionalalert"><i class="fas fa-info-circle me-2"></i></a></h4>
                         <div class="chart-container" style="position: relative; height: 25vh;">
                             <canvas id="sentimentosChartProporcional"></canvas>
                         </div>
@@ -281,16 +295,24 @@
         });
         
         // POPUPS
-        const infoIcon = document.getElementById("info-icon");
-        const infoPopup = document.getElementById("info-popup");
-        const closePopupButton = document.getElementById("close-popup");
 
-        infoIcon.addEventListener("click", () => {
-            infoPopup.style.display = "block";
+        // Adicione um evento de clique ao botão
+        document.getElementById("hubalert").addEventListener("click", function() {
+            alert("Sentimentos HUB : presença de 10 ou mais conexões \n" +
+                    "Sentimentos Isolados: presença de apenas 1 conexão");
         });
 
-        closePopupButton.addEventListener("click", () => {
-            infoPopup.style.display = "none";
+        // Adicione um evento de clique ao botão
+        document.getElementById("discrepantealert").addEventListener("click", function() {
+            alert("Sentimentos com predominância de conexões de sentimentos positivos ou negativos, com uma ou duas conexões de categoria oposta (exemplo: 5 conexões com sentimentos positivos, 1 conexão negativa).");
+        });
+
+        document.getElementById("proporcionalalert").addEventListener("click", function() {
+            alert("Sentimentos com conexões proporcionais, dividas entre sentimentos positivos e negativos.");
+        });
+
+        document.getElementById("mapeadosalert").addEventListener("click", function() {
+            alert("Sentimentos que já foram conectados com outros sentimentos.");
         });
 
     </script>
