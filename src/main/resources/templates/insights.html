@@ -30,9 +30,29 @@
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        .popup {
+            display: none;
+            position: absolute;
+            background-color: #000000;
+            border: 1px solid #ccc;
+            padding: 15px;
+            z-index: 1;
+        }
+
+        #info-icon:hover + #info-popup {
+            display: block;
+        }
+    </style>
 </head>
 
 <body id="page-top">
+
+    <!-- POPUPS -->
+    <div class="popup" id="info-popup">
+        <p>Este é um pop-up de informação.</p>
+    </div>
 
     <!-- Navigation-->
     <nav class="navbar navbar-expand-md bg-body-secondary border-bottom py-3 text-uppercase fixed-top" id="mainNav">
@@ -63,9 +83,9 @@
 
     <br><br><br><br><br><br>
     <div class="container">
-        <h1>Sentimentos Mapeados</h1>
         <div class="row">
             <div class="col-md-6">
+                <h1 align="center">Sentimentos Mapeados <i class="fas fa-info-circle me-2"></i></h1>
                 <div class="chart-container" style="position: relative; height: 65vh;">
                     <canvas id="sentimentosChart"></canvas>
                 </div>
@@ -73,7 +93,7 @@
             <div class="col-md-6" align="right">
 
                 <div align="center">
-                    <h4>Quantidade de Relacionamentos em Destaque</h1>
+                    <h4>Quantidade de Relacionamentos em Destaque <i class="fas fa-info-circle me-2" id="info-icon"></i></h4>
                     <div class="chart-container" style="position: relative; height: 25vh;">
                         <canvas id="sentimentosChartHubVizinho"></canvas>
                     </div>
@@ -82,14 +102,14 @@
                 <hr style="background-color: #000; height: 2px; margin: 10px 0;">
                 <div style="display: flex; justify-content: space-between;"> 
                     <div>
-                        <h4>Sentimentos com Relações Discrepantes</h1>
+                        <h4>Sentimentos com Relações Discrepantes <i class="fas fa-info-circle me-2"></i></h4>
                         <div class="chart-container" style="position: relative; height: 25vh;">
                             <canvas id="sentimentosChartDiscrepantes"></canvas>
                         </div>
                         <p id="discrepante"></p>
                     </div>
                     <div>
-                        <h4>Sentimentos com Relações Proporcionais</h1>
+                        <h4>Sentimentos com Relações Proporcionais <i class="fas fa-info-circle me-2"></i></h4>
                         <div class="chart-container" style="position: relative; height: 25vh;">
                             <canvas id="sentimentosChartProporcional"></canvas>
                         </div>
@@ -260,7 +280,18 @@
 
         });
         
-        
+        // POPUPS
+        const infoIcon = document.getElementById("info-icon");
+        const infoPopup = document.getElementById("info-popup");
+        const closePopupButton = document.getElementById("close-popup");
+
+        infoIcon.addEventListener("click", () => {
+            infoPopup.style.display = "block";
+        });
+
+        closePopupButton.addEventListener("click", () => {
+            infoPopup.style.display = "none";
+        });
 
     </script>
 
