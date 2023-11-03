@@ -59,6 +59,22 @@
             </div>
         </div>
     </nav>
+    <br><br><br>
+    <nav class="navbar navbar-expand-md border-bottom text-uppercase" style="z-index: 999; background-color: #E9ECEF;">
+        <div class="container">
+            <div class=" w-100  mt-3 mt-md-0">
+                <ul class="navbar-nav me-auto navbar-nav-scroll  d-flex align-items-end-md-center align-items-end justify-content-end w-100">
+                    <li class="nav-item mx-0 mx-md-2 mb-2 mb-md-0" align="right">
+                        <span>Categorias de Sentimentos: </span>
+                        <br>
+                        <span style="background-color: #0D6EFD; color: whitesmoke;">Positivo</span>
+                        <span style="background-color: gray; color: black;">Neutro</span>
+                        <span style="background-color: #800080; color: whitesmoke;">Negativo</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
     <div id="cy"></div>
     <style>
         #cy {
@@ -87,11 +103,11 @@
                             // Obtém a categoria do nó
                             var category = node.data('categoria');
                             if (category === 'NEGATIVO') {
-                                return 'brown'; // Cor para a categoria negativa
+                                return '#800080'; // Cor para a categoria negativa
                             } else if (category === 'NEUTRO') {
                                 return 'gray'; // Cor para a categoria neutra
                             } else if (category === 'POSITIVO') {
-                                return 'green'; // Cor para a categoria positiva
+                                return '#0D6EFD'; // Cor para a categoria positiva
                             } else {
                                 return 'purple'; // Cor padrão é roxo
                             }
